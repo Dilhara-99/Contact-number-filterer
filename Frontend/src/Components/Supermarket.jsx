@@ -4,14 +4,39 @@ import { Divider, RadioGroup, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import TimePicker from "./TimePicker";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import DateSelector from "../Components/DateSelector";
+import SupermarketTP from "./SupermarketTP";
 
-export default function Supermarket() {
-  const [amountOption, setAmountOption] = useState("Equal");
+export default function Supermarket({
+  setSelectedDays,
+  setSelectedTime,
+  amountValues,
+  setAmountValues,
+  setAmountOption,
+  amountOption,
+  selectedServiceProvider,
+  setSelectedServiceProvider,
+}) {
+  const handleAmountChange = (index, value) => {
+    const newAmountValues = [...amountValues];
+    newAmountValues[index] = value;
+    setAmountValues(newAmountValues);
+  };
 
+  const handleServiceProviderChange = (restaurant) => {
+    const isSelected = selectedServiceProvider.includes(restaurant);
+
+    if (isSelected) {
+      const updatedRestaurants = selectedServiceProvider.filter(
+        (r) => r !== restaurant
+      );
+      setSelectedServiceProvider(updatedRestaurants);
+    } else {
+      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+    }
+  };
   const renderAmountInputs = () => {
     if (amountOption === "Between") {
       return (
@@ -24,8 +49,20 @@ export default function Supermarket() {
           noValidate
           autoComplete="off"
         >
-          <TextField id="rangeStart" variant="outlined" placeholder="Rs." />
-          <TextField id="rangeEnd" variant="outlined" placeholder="Rs." />
+          <TextField
+            id="rangeStart"
+            variant="outlined"
+            placeholder="Rs."
+            value={amountValues[0]}
+            onChange={(e) => handleAmountChange(0, e.target.value)}
+          />
+          <TextField
+            id="rangeEnd"
+            variant="outlined"
+            placeholder="Rs."
+            value={amountValues[1]}
+            onChange={(e) => handleAmountChange(1, e.target.value)}
+          />
         </Box>
       );
     } else {
@@ -39,12 +76,21 @@ export default function Supermarket() {
           noValidate
           autoComplete="off"
         >
-          <TextField id="standard-basic" variant="outlined" placeholder="Rs." />
+          <TextField
+            id="standard-basic"
+            variant="outlined"
+            placeholder="Rs."
+            value={amountValues[0]}
+            onChange={(e) => handleAmountChange(0, e.target.value)}
+          />
         </Box>
       );
     }
   };
-
+  const handleRadioChange = (e) => {
+    setAmountOption(e.target.value);
+    setAmountValues([""]);
+  };
   return (
     <>
       <Grid>
@@ -80,11 +126,30 @@ export default function Supermarket() {
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Keells Super" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes(
+                              "Keells Super"
+                            )}
+                            onChange={() =>
+                              handleServiceProviderChange("Keells Super")
+                            }
+                          />
+                        }
+                        label="Keells Super"
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <FormControlLabel
-                        control={<Checkbox />}
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes(
+                              "Cargills"
+                            )}
+                            onChange={() => handleServiceProviderChange("Cargills")}
+                          />
+                        }
                         label="Cargills"
                       />
                     </Grid>
@@ -93,14 +158,24 @@ export default function Supermarket() {
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Arpico" />
+                      <FormControlLabel
+                        control={<Checkbox />}
+                        label="Arpico"
+                        checked={selectedServiceProvider.includes("Arpico")}
+                        onChange={() => handleServiceProviderChange("Arpico")}
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Laugfs" />
+                      <FormControlLabel
+                        control={<Checkbox />}
+                        label="Laugfs"
+                        checked={selectedServiceProvider.includes("Laugfs")}
+                        onChange={() => handleServiceProviderChange("Laugfs")}
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -117,7 +192,7 @@ export default function Supermarket() {
                   padding: "10px",
                 }}
               >
-                <DateSelector />
+                <DateSelector setSelectedDays={setSelectedDays} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -137,7 +212,7 @@ export default function Supermarket() {
                   </Grid>
                   <Grid item xs={12}>
                     <Box>
-                      <TimePicker />
+                      <SupermarketTP setSelectedTime={setSelectedTime} />
                     </Box>
                   </Grid>
                 </Grid>
@@ -163,7 +238,7 @@ export default function Supermarket() {
                       <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         value={amountOption}
-                        onChange={(e) => setAmountOption(e.target.value)}
+                        onChange={handleRadioChange}
                         name="radio-buttons-group"
                       >
                         <Grid container>

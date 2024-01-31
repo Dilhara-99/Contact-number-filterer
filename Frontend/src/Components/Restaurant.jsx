@@ -4,14 +4,39 @@ import { Divider, RadioGroup, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import TimePicker from "./TimePicker";
+import RestaurantTP from "./RestaurantTP";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import DateSelector from "./DateSelector";
 
-export default function Restaurant() {
-  const [amountOption, setAmountOption] = useState("Equal");
+export default function Restaurant({
+  setSelectedDays,
+  setSelectedTime,
+  amountValues,
+  setAmountValues,
+  setAmountOption,
+  amountOption,
+  selectedServiceProvider,
+  setSelectedServiceProvider,
+}) {
+  const handleAmountChange = (index, value) => {
+    const newAmountValues = [...amountValues];
+    newAmountValues[index] = value;
+    setAmountValues(newAmountValues);
+  };
 
+  const handleServiceProviderChange = (restaurant) => {
+    const isSelected = selectedServiceProvider.includes(restaurant);
+
+    if (isSelected) {
+      const updatedRestaurants = selectedServiceProvider.filter(
+        (r) => r !== restaurant
+      );
+      setSelectedServiceProvider(updatedRestaurants);
+    } else {
+      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+    }
+  };
   const renderTravelFeeInputs = () => {
     if (amountOption === "Between") {
       return (
@@ -24,8 +49,20 @@ export default function Restaurant() {
           noValidate
           autoComplete="off"
         >
-          <TextField id="rangeStart" variant="outlined" placeholder="Rs." />
-          <TextField id="rangeEnd" variant="outlined" placeholder="Rs." />
+          <TextField
+            id="rangeStart"
+            variant="outlined"
+            placeholder="Rs."
+            value={amountValues[0]}
+            onChange={(e) => handleAmountChange(0, e.target.value)}
+          />
+          <TextField
+            id="rangeEnd"
+            variant="outlined"
+            placeholder="Rs."
+            value={amountValues[1]}
+            onChange={(e) => handleAmountChange(1, e.target.value)}
+          />
         </Box>
       );
     } else {
@@ -39,12 +76,21 @@ export default function Restaurant() {
           noValidate
           autoComplete="off"
         >
-          <TextField id="standard-basic" variant="outlined" placeholder="Rs." />
+          <TextField
+            id="standard-basic"
+            variant="outlined"
+            placeholder="Rs."
+            value={amountValues[0]}
+            onChange={(e) => handleAmountChange(0, e.target.value)}
+          />
         </Box>
       );
     }
   };
-
+  const handleRadioChange = (e) => {
+    setAmountOption(e.target.value);
+    setAmountValues([""]);
+  };
   return (
     <>
       <Grid>
@@ -80,12 +126,27 @@ export default function Restaurant() {
                   <Grid container>
                     <Grid item xs={12}>
                       <FormControlLabel
-                        control={<Checkbox />}
-                        label="PizzaHut"
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes(
+                              "Pizza hut"
+                            )}
+                            onChange={() => handleServiceProviderChange("Pizza hut")}
+                          />
+                        }
+                        label="Pizza hut"
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Other" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("Kfc")}
+                            onChange={() => handleServiceProviderChange("Kfc")}
+                          />
+                        }
+                        label="Kfc"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -93,7 +154,14 @@ export default function Restaurant() {
                   <Grid container>
                     <Grid item xs={12}>
                       <FormControlLabel
-                        control={<Checkbox />}
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes(
+                              "Dominos"
+                            )}
+                            onChange={() => handleServiceProviderChange("Dominos")}
+                          />
+                        }
                         label="Dominos"
                       />
                     </Grid>
@@ -103,7 +171,14 @@ export default function Restaurant() {
                   <Grid container>
                     <Grid item xs={12}>
                       <FormControlLabel
-                        control={<Checkbox />}
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes(
+                              "Mr.Kottu"
+                            )}
+                            onChange={() => handleServiceProviderChange("Mr.Kottu")}
+                          />
+                        }
                         label="Mr.Kottu"
                       />
                     </Grid>
@@ -122,7 +197,7 @@ export default function Restaurant() {
                   padding: "10px",
                 }}
               >
-                <DateSelector />
+                <DateSelector setSelectedDays={setSelectedDays} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -142,7 +217,7 @@ export default function Restaurant() {
                   </Grid>
                   <Grid item xs={12}>
                     <Box>
-                      <TimePicker />
+                      <RestaurantTP setSelectedTime={setSelectedTime} />
                     </Box>
                   </Grid>
                 </Grid>
@@ -168,7 +243,7 @@ export default function Restaurant() {
                       <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         value={amountOption}
-                        onChange={(e) => setAmountOption(e.target.value)}
+                        onChange={handleRadioChange}
                         name="radio-buttons-group"
                       >
                         <Grid container>

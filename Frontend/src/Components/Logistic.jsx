@@ -4,13 +4,31 @@ import { Divider, RadioGroup, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import TimePicker from "./TimePicker";
+import LogisticTP from "./LogisticTP";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import DateSelector from "./DateSelector";
 
-export default function Logistic() {
+export default function Logistic({
+  setSelectedDays,
+  setSelectedTime,
+  selectedServiceProvider,
+  setSelectedServiceProvider,
+}) {
   const [countOption, setCountOption] = useState("Equal");
+
+  const handleServiceProviderChange = (restaurant) => {
+    const isSelected = selectedServiceProvider.includes(restaurant);
+
+    if (isSelected) {
+      const updatedRestaurants = selectedServiceProvider.filter(
+        (r) => r !== restaurant
+      );
+      setSelectedServiceProvider(updatedRestaurants);
+    } else {
+      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+    }
+  };
 
   const renderCountInputs = () => {
     if (countOption === "Between") {
@@ -80,11 +98,26 @@ export default function Logistic() {
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Trico" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("Trico")}
+                            onChange={() => handleServiceProviderChange("Trico")}
+                          />
+                        }
+                        label="Trico"
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <FormControlLabel
-                        control={<Checkbox />}
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes(
+                              "Advantis"
+                            )}
+                            onChange={() => handleServiceProviderChange("Advantis")}
+                          />
+                        }
                         label="Advantis"
                       />
                     </Grid>
@@ -93,14 +126,30 @@ export default function Logistic() {
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="L1" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("L1")}
+                            onChange={() => handleServiceProviderChange("L1")}
+                          />
+                        }
+                        label="L1"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="L2" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("L2")}
+                            onChange={() => handleServiceProviderChange("L2")}
+                          />
+                        }
+                        label="L2"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -119,7 +168,7 @@ export default function Logistic() {
                     padding: "10px",
                   }}
                 >
-                  <DateSelector />
+                  <DateSelector setSelectedDays={setSelectedDays} />
                 </Box>
               </Grid>
               <Box
@@ -138,7 +187,7 @@ export default function Logistic() {
                   </Grid>
                   <Grid item xs={12}>
                     <Box>
-                      <TimePicker />
+                      <LogisticTP setSelectedTime={setSelectedTime} />
                     </Box>
                   </Grid>
                 </Grid>

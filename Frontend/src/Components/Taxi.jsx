@@ -8,9 +8,26 @@ import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import DateSelector from "./DateSelector";
 
-export default function Taxi() {
+export default function Taxi({
+  setSelectedDays,
+  selectedServiceProvider,
+  setSelectedServiceProvider,
+}) {
   const [travelTimeOption, setTravelTimeOption] = useState("Equal");
   const [travelFeeOption, setTravelFeeOption] = useState("Equal");
+
+  const handleServiceProviderChange = (restaurant) => {
+    const isSelected = selectedServiceProvider.includes(restaurant);
+
+    if (isSelected) {
+      const updatedRestaurants = selectedServiceProvider.filter(
+        (r) => r !== restaurant
+      );
+      setSelectedServiceProvider(updatedRestaurants);
+    } else {
+      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+    }
+  };
 
   const renderTravelTimeInputs = () => {
     if (travelTimeOption === "Between") {
@@ -117,24 +134,56 @@ export default function Taxi() {
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="PickMe" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("PickMe")}
+                            onChange={() => handleServiceProviderChange("PickMe")}
+                          />
+                        }
+                        label="PickMe"
+                      />
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Uber" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("Uber")}
+                            onChange={() => handleServiceProviderChange("Uber")}
+                          />
+                        }
+                        label="Uber"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Taxi1" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("Taxi1")}
+                            onChange={() => handleServiceProviderChange("Taxi1")}
+                          />
+                        }
+                        label="Taxi1"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={4}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <FormControlLabel control={<Checkbox />} label="Taxi2" />
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={selectedServiceProvider.includes("Taxi2")}
+                            onChange={() => handleServiceProviderChange("Taxi2")}
+                          />
+                        }
+                        label="Taxi2"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -152,7 +201,7 @@ export default function Taxi() {
                     padding: "0 10px 0 10px",
                   }}
                 >
-                  <DateSelector />
+                  <DateSelector setSelectedDays={setSelectedDays} />
                 </Box>
               </Grid>
               <Box

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box, Typography, Stack, Checkbox } from "@mui/material";
 
-const DateSelector = () => {
-  const [selectedDays, setSelectedDays] = useState([
+const DateSelector = ({ setSelectedDays }) => {
+  const [pselectedDays, setPSelectedDays] = useState([
     true,
     true,
     true,
@@ -11,11 +11,27 @@ const DateSelector = () => {
     true,
     true,
   ]);
-
   const handleCheckboxChange = (index) => {
-    const newSelectedDays = [...selectedDays];
+    const newSelectedDays = [...pselectedDays];
     newSelectedDays[index] = !newSelectedDays[index];
-    setSelectedDays(newSelectedDays);
+    setPSelectedDays(newSelectedDays);
+
+    const selectedDayNames = newSelectedDays
+      .map((isSelected, index) =>
+        isSelected
+          ? [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ][index]
+          : null
+      )
+      .filter((day) => day !== null);
+    setSelectedDays(selectedDayNames);
   };
 
   return (
@@ -34,7 +50,7 @@ const DateSelector = () => {
           ].map((day, index) => (
             <Box key={index}>
               <Checkbox
-                checked={selectedDays[index]}
+                checked={pselectedDays[index]}
                 onChange={() => handleCheckboxChange(index)}
               />
               <Typography>{day}</Typography>
