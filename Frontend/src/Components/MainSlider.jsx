@@ -7,8 +7,7 @@ function valuetext(value) {
   return `${value}`;
 }
 
-export default function MainSlider({ userCount,value, setValue}) {
-  
+export default function MainSlider({ userCount, value, setValue }) {
   const [selectedUserCount, setSelectedUserCount] = React.useState(0);
 
   const handleChange = (event, newValue) => {

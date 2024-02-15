@@ -2,20 +2,20 @@ module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define(
     "Users",
     {
-      Send_Id: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        primaryKey: true,
-      },
       Contact_No: {
         type: DataTypes.BIGINT,
+        allowNull: false,
+      },
+      Send_Id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
         allowNull: false,
       },
       Time: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      Day_Name: {
+      DayOfWeek: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -59,3 +59,4 @@ module.exports = (sequelize, DataTypes) => {
 
   return Users;
 };
+

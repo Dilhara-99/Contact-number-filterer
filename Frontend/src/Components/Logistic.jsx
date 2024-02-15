@@ -17,16 +17,16 @@ export default function Logistic({
 }) {
   const [countOption, setCountOption] = useState("Equal");
 
-  const handleServiceProviderChange = (restaurant) => {
-    const isSelected = selectedServiceProvider.includes(restaurant);
+  const handleServiceProviderChange = (provider) => {
+    const isSelected = selectedServiceProvider.includes(provider);
 
     if (isSelected) {
-      const updatedRestaurants = selectedServiceProvider.filter(
-        (r) => r !== restaurant
+      const updatedProviders = selectedServiceProvider.filter(
+        (r) => r !== provider
       );
-      setSelectedServiceProvider(updatedRestaurants);
+      setSelectedServiceProvider(updatedProviders);
     } else {
-      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+      setSelectedServiceProvider([...selectedServiceProvider, provider]);
     }
   };
 
@@ -102,7 +102,9 @@ export default function Logistic({
                         control={
                           <Checkbox
                             checked={selectedServiceProvider.includes("Trico")}
-                            onChange={() => handleServiceProviderChange("Trico")}
+                            onChange={() =>
+                              handleServiceProviderChange("Trico")
+                            }
                           />
                         }
                         label="Trico"
@@ -115,7 +117,9 @@ export default function Logistic({
                             checked={selectedServiceProvider.includes(
                               "Advantis"
                             )}
-                            onChange={() => handleServiceProviderChange("Advantis")}
+                            onChange={() =>
+                              handleServiceProviderChange("Advantis")
+                            }
                           />
                         }
                         label="Advantis"

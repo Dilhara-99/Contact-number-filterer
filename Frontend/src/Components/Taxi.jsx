@@ -12,21 +12,38 @@ export default function Taxi({
   setSelectedDays,
   selectedServiceProvider,
   setSelectedServiceProvider,
+  travelFeeOption,
+  setTravelFeeOption,
+  travelTimeOption,
+  setTravelTimeOption,
+  travelFeeAmount,
+  setTravelFeeAmount,
+  travelTime,
+  setTravelTime,
 }) {
-  const [travelTimeOption, setTravelTimeOption] = useState("Equal");
-  const [travelFeeOption, setTravelFeeOption] = useState("Equal");
-
-  const handleServiceProviderChange = (restaurant) => {
-    const isSelected = selectedServiceProvider.includes(restaurant);
+  const handleServiceProviderChange = (provider) => {
+    const isSelected = selectedServiceProvider.includes(provider);
 
     if (isSelected) {
-      const updatedRestaurants = selectedServiceProvider.filter(
-        (r) => r !== restaurant
+      const updatedProviders = selectedServiceProvider.filter(
+        (r) => r !== provider
       );
-      setSelectedServiceProvider(updatedRestaurants);
+      setSelectedServiceProvider(updatedProviders);
     } else {
-      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+      setSelectedServiceProvider([...selectedServiceProvider, provider]);
     }
+  };
+
+  const handleTravelFeeAmountChange = (index, value) => {
+    const newTravelFeeAmount = [...travelFeeAmount];
+    newTravelFeeAmount[index] = value;
+    setTravelFeeAmount(newTravelFeeAmount);
+  };
+
+  const handleTravelTimeChange = (index, value) => {
+    const newTravelTimeValues = [...travelTime];
+    newTravelTimeValues[index] = value;
+    setTravelTime(newTravelTimeValues);
   };
 
   const renderTravelTimeInputs = () => {
@@ -41,8 +58,20 @@ export default function Taxi({
           noValidate
           autoComplete="off"
         >
-          <TextField id="rangeStart" variant="outlined" placeholder="minutes" />
-          <TextField id="rangeEnd" variant="outlined" placeholder="minutes" />
+          <TextField
+            id="rangeStart"
+            variant="outlined"
+            placeholder="minutes"
+            value={travelTime[0]}
+            onChange={(e) => handleTravelTimeChange(0, e.target.value)}
+          />
+          <TextField
+            id="rangeEnd"
+            variant="outlined"
+            placeholder="minutes"
+            value={travelTime[1]}
+            onChange={(e) => handleTravelTimeChange(1, e.target.value)}
+          />
         </Box>
       );
     } else {
@@ -60,10 +89,22 @@ export default function Taxi({
             id="standard-basic"
             variant="outlined"
             placeholder="minutes"
+            value={travelTime[0]}
+            onChange={(e) => handleTravelTimeChange(0, e.target.value)}
           />
         </Box>
       );
     }
+  };
+
+  const handleTravelFeeRadioChange = (e) => {
+    setTravelFeeOption(e.target.value);
+    setTravelFeeAmount([""]);
+  };
+
+  const handleTravelTimeRadioChange = (e) => {
+    setTravelTimeOption(e.target.value);
+    setTravelTime([""]);
   };
 
   const renderTravelFeeInputs = () => {
@@ -78,8 +119,20 @@ export default function Taxi({
           noValidate
           autoComplete="off"
         >
-          <TextField id="travelFeeStart" variant="outlined" placeholder="Rs." />
-          <TextField id="travelFeeEnd" variant="outlined" placeholder="Rs." />
+          <TextField
+            id="travelFeeStart"
+            variant="outlined"
+            placeholder="Rs."
+            value={travelFeeAmount[0]}
+            onChange={(e) => handleTravelFeeAmountChange(0, e.target.value)}
+          />
+          <TextField
+            id="travelFeeEnd"
+            variant="outlined"
+            placeholder="Rs."
+            value={travelFeeAmount[1]}
+            onChange={(e) => handleTravelFeeAmountChange(1, e.target.value)}
+          />
         </Box>
       );
     } else {
@@ -93,7 +146,13 @@ export default function Taxi({
           noValidate
           autoComplete="off"
         >
-          <TextField id="standard-basic" variant="outlined" placeholder="Rs." />
+          <TextField
+            id="standard-basic"
+            variant="outlined"
+            placeholder="Rs."
+            value={travelFeeAmount[0]}
+            onChange={(e) => handleTravelFeeAmountChange(0, e.target.value)}
+          />
         </Box>
       );
     }
@@ -138,7 +197,9 @@ export default function Taxi({
                         control={
                           <Checkbox
                             checked={selectedServiceProvider.includes("PickMe")}
-                            onChange={() => handleServiceProviderChange("PickMe")}
+                            onChange={() =>
+                              handleServiceProviderChange("PickMe")
+                            }
                           />
                         }
                         label="PickMe"
@@ -164,7 +225,9 @@ export default function Taxi({
                         control={
                           <Checkbox
                             checked={selectedServiceProvider.includes("Taxi1")}
-                            onChange={() => handleServiceProviderChange("Taxi1")}
+                            onChange={() =>
+                              handleServiceProviderChange("Taxi1")
+                            }
                           />
                         }
                         label="Taxi1"
@@ -179,7 +242,9 @@ export default function Taxi({
                         control={
                           <Checkbox
                             checked={selectedServiceProvider.includes("Taxi2")}
-                            onChange={() => handleServiceProviderChange("Taxi2")}
+                            onChange={() =>
+                              handleServiceProviderChange("Taxi2")
+                            }
                           />
                         }
                         label="Taxi2"
@@ -223,7 +288,7 @@ export default function Taxi({
                       <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         value={travelTimeOption}
-                        onChange={(e) => setTravelTimeOption(e.target.value)}
+                        onChange={handleTravelTimeRadioChange}
                         name="radio-buttons-group"
                       >
                         <Grid container>
@@ -285,7 +350,7 @@ export default function Taxi({
                       <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         value={travelFeeOption}
-                        onChange={(e) => setTravelFeeOption(e.target.value)}
+                        onChange={handleTravelFeeRadioChange}
                         name="radio-buttons-group"
                       >
                         <Grid container>

@@ -25,16 +25,16 @@ export default function Restaurant({
     setAmountValues(newAmountValues);
   };
 
-  const handleServiceProviderChange = (restaurant) => {
-    const isSelected = selectedServiceProvider.includes(restaurant);
+  const handleServiceProviderChange = (provider) => {
+    const isSelected = selectedServiceProvider.includes(provider);
 
     if (isSelected) {
-      const updatedRestaurants = selectedServiceProvider.filter(
-        (r) => r !== restaurant
+      const updatedProviders = selectedServiceProvider.filter(
+        (r) => r !== provider
       );
-      setSelectedServiceProvider(updatedRestaurants);
+      setSelectedServiceProvider(updatedProviders);
     } else {
-      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+      setSelectedServiceProvider([...selectedServiceProvider, provider]);
     }
   };
   const renderTravelFeeInputs = () => {
@@ -131,7 +131,9 @@ export default function Restaurant({
                             checked={selectedServiceProvider.includes(
                               "Pizza hut"
                             )}
-                            onChange={() => handleServiceProviderChange("Pizza hut")}
+                            onChange={() =>
+                              handleServiceProviderChange("Pizza hut")
+                            }
                           />
                         }
                         label="Pizza hut"
@@ -159,7 +161,9 @@ export default function Restaurant({
                             checked={selectedServiceProvider.includes(
                               "Dominos"
                             )}
-                            onChange={() => handleServiceProviderChange("Dominos")}
+                            onChange={() =>
+                              handleServiceProviderChange("Dominos")
+                            }
                           />
                         }
                         label="Dominos"
@@ -176,7 +180,9 @@ export default function Restaurant({
                             checked={selectedServiceProvider.includes(
                               "Mr.Kottu"
                             )}
-                            onChange={() => handleServiceProviderChange("Mr.Kottu")}
+                            onChange={() =>
+                              handleServiceProviderChange("Mr.Kottu")
+                            }
                           />
                         }
                         label="Mr.Kottu"

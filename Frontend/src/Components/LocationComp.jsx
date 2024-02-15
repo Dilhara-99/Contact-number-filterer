@@ -22,7 +22,7 @@ const provincesData = {
 const MainCitiesData = {
   Colombo: [
     "Bambalapitiya",
-    "Dehiwela",
+    "Dehiwala",
     "Fort",
     "Attidiya",
     "Union Place",
@@ -42,6 +42,28 @@ const MainCitiesData = {
     "Nawala",
     "Nugegoda",
     "Pelawaththa",
+    "Raththanapitiya",
+    "Thimbirigasyaya",
+    "Talahena",
+    "Arangala",
+    "Gamsaba",
+    "Boralesgamuwa",
+    "Wijerama",
+    "Pepiliyana",
+    "Narahenpita",
+    "Pitakotte",
+    "Kalubowila",
+    "Mt. Lavinia",
+    "Embuldeniya",
+    "Kotte",
+    "Kottawa 2",
+    "Kohuwala",
+    "Borella",
+    "Crescat",
+    "Marine Drive",
+    "Moratuwa Mall",
+    "Liberty Plaza 2",
+    "Kohuwala 2",
   ],
   Gampaha: [
     "Gampaha",
@@ -51,9 +73,13 @@ const MainCitiesData = {
     "Kadawatha",
     "Yakkala",
     "Wattala",
+    "Mahabage",
+    "Hendala",
+    "Kapuwatta",
+    "Wattala 2",
   ],
-  Kalutara: ["Kalutara", "Beruwala", "Aluthgama", "Panadura"],
-  Kandy: ["Kandy", "Peradeniya", "Katugastota", "Gampola"],
+  Kalutara: ["Kalutara", "Beruwala", "Aluthgama", "Panadura", "Panadura 2"],
+  Kandy: ["Kandy", "Peradeniya", "Katugastota", "Gampola", "Kandy-2"],
   NuwaraEliya: ["Nuwara Eliya"],
   Matale: ["Matale"],
   Kilinochchi: ["Kilinochchi"],
@@ -91,8 +117,7 @@ const LocationComp = ({
   const [selectedDistricts, setSelectedDistricts] = useState([]);
   const [selectedCities, setSelectedCities] = useState([]);
 
-  useEffect(() => {
-  }, [
+  useEffect(() => {}, [
     userCountByProvince,
     userCountByDistrict,
     userCountByCity,

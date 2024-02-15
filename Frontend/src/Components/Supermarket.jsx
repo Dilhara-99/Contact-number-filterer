@@ -25,16 +25,16 @@ export default function Supermarket({
     setAmountValues(newAmountValues);
   };
 
-  const handleServiceProviderChange = (restaurant) => {
-    const isSelected = selectedServiceProvider.includes(restaurant);
+  const handleServiceProviderChange = (provider) => {
+    const isSelected = selectedServiceProvider.includes(provider);
 
     if (isSelected) {
-      const updatedRestaurants = selectedServiceProvider.filter(
-        (r) => r !== restaurant
+      const updatedProviders = selectedServiceProvider.filter(
+        (r) => r !== provider
       );
-      setSelectedServiceProvider(updatedRestaurants);
+      setSelectedServiceProvider(updatedProviders);
     } else {
-      setSelectedServiceProvider([...selectedServiceProvider, restaurant]);
+      setSelectedServiceProvider([...selectedServiceProvider, provider]);
     }
   };
   const renderAmountInputs = () => {
@@ -147,7 +147,9 @@ export default function Supermarket({
                             checked={selectedServiceProvider.includes(
                               "Cargills"
                             )}
-                            onChange={() => handleServiceProviderChange("Cargills")}
+                            onChange={() =>
+                              handleServiceProviderChange("Cargills")
+                            }
                           />
                         }
                         label="Cargills"

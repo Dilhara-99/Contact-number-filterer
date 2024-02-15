@@ -65,7 +65,7 @@ const Home = () => {
   const [userCountByDistrict, setUserCountByDistrict] = useState(0);
   const [userCountByCity, setUserCountByCity] = useState(0);
   const [userCountByGender, setUserCountByGender] = useState(0);
-  const [userCountByAge, setUserCountByAge] = useState("null");
+  const [userCountByAge, setUserCountByAge] = useState("");
   const [allUsersInSelectedProvince, setAllUsersInSelectedProvince] =
     useState(0);
   const [allUsersInSelectedDistrict, setAllUsersInSelectedDistrict] =
@@ -84,28 +84,37 @@ const Home = () => {
   const [amountOption, setAmountOption] = useState("");
   const [amountValues, setAmountValues] = useState([""]);
   const [selectedServiceProvider, setSelectedServiceProvider] = useState([]);
+  const [travelTimeOption, setTravelTimeOption] = useState("");
+  const [travelFeeOption, setTravelFeeOption] = useState("");
+  const [travelFeeAmount, setTravelFeeAmount] = useState("");
+  const [travelTime, setTravelTime] = useState("");
   const usersPerPage = 60;
 
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        API_ENDPOINT + "/userdata/filtered-data",
+        API_ENDPOINT + "/userdata/filtered-data/view/userlist",
         {
           Province: selectedProvince,
           District: selectedDistrict,
           City: selectedCity,
           Age: selectedAge,
-          Day_Name: selectedDays,
+          DayOfWeek: selectedDays,
           Time: selectedTime,
           Gender: selectedGender,
           Service: selectedService,
           Amount: amountValues,
           AmountOption: amountOption,
           Service_Providers: selectedServiceProvider,
+          travelTimeOption: travelTimeOption,
+          travelTime: travelTime,
+          travelFeeOption: travelFeeOption,
+          travelFeeAmount: travelFeeAmount,
         }
       );
 
       setUserList(response.data.userList);
+      setValue([1, userCount]);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -121,15 +130,18 @@ const Home = () => {
             City: selectedCity,
             Age: selectedAge,
             Gender: selectedGender,
-            Day_Name: selectedDays,
+            DayOfWeek: selectedDays,
             Time: selectedTime,
             Service: selectedService,
             Amount: amountValues,
             AmountOption: amountOption,
             Service_Providers: selectedServiceProvider,
+            travelTimeOption: travelTimeOption,
+            travelTime: travelTime,
+            travelFeeOption: travelFeeOption,
+            travelFeeAmount: travelFeeAmount,
           }
         );
-        setUserList(response.data.userList);
         setUserCount(response.data.userCount);
         setUserCountByCity(response.data.userCountByCity);
         setUserCountByDistrict(response.data.userCountByDistrict);
@@ -156,6 +168,10 @@ const Home = () => {
     amountOption,
     amountValues,
     selectedServiceProvider,
+    travelTimeOption,
+    travelTime,
+    travelFeeOption,
+    travelFeeAmount,
   ]);
 
   const handleServiceChange = (event) => {
@@ -200,25 +216,28 @@ const Home = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.post(
-        API_ENDPOINT + "/userdata/filtered-data",
+        API_ENDPOINT + "/userdata/filtered-data/view/userlist",
         {
           Province: selectedProvince,
           District: selectedDistrict,
           City: selectedCity,
           Age: selectedAge,
           Gender: selectedGender,
-          Day_Name: selectedDays,
+          DayOfWeek: selectedDays,
           Time: selectedTime,
           Amount: amountValues,
           AmountOption: amountOption,
           Service: selectedService,
           Service_Providers: selectedServiceProvider,
+          travelTimeOption: travelTimeOption,
+          travelTime: travelTime,
+          travelFeeOption: travelFeeOption,
+          travelFeeAmount: travelFeeAmount,
         },
         {
           params: { search: searchTerm },
         }
       );
-      setUserCount(response.data.userCount);
       setUserList(response.data.userList);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -230,45 +249,10 @@ const Home = () => {
   }, [value]);
 
   const handleDownload = () => {
-    const selectedFieldsLabels = {
-      Province: "Province",
-      District: "District",
-      City: "City",
-      Age: "Age",
-      Day_Name: "Day",
-      Time: "Time",
-      Gender: "Gender",
-      Service: "Service",
-      Amount: "Amount",
-      AmountOption: "Amount Option",
-      Service_Providers: "Service Providers",
-    };
+    const filename = "filtered_users.csv";
+    const columns = ["Contact_No"];
 
-    const selectedLabels = Object.keys(selectedFieldsLabels)
-      .filter((field) => {
-        return (
-          selectedProvince.includes(field) ||
-          selectedDistrict.includes(field) ||
-          selectedCity.includes(field) ||
-          selectedAge.includes(field) ||
-          selectedDays.includes(field) ||
-          selectedTime.includes(field) ||
-          selectedGender.includes(field) ||
-          selectedService === field ||
-          amountValues.includes(field) ||
-          amountOption === field ||
-          selectedServiceProvider.includes(field)
-        );
-      })
-      .map((field) => selectedFieldsLabels[field]);
-
-    const columns = ["Contact_No", ...selectedLabels];
-
-    downloadCSV({
-      filename: "filtered_users.csv",
-      columns,
-      data: filteredUsers,
-    });
+    downloadCSV({ filename, columns, data: filteredUsers });
     window.location.reload();
   };
 
@@ -293,6 +277,14 @@ const Home = () => {
             setSelectedDays={setSelectedDays}
             selectedServiceProvider={selectedServiceProvider}
             setSelectedServiceProvider={setSelectedServiceProvider}
+            travelTimeOption={travelTimeOption}
+            setTravelTimeOption={setTravelTimeOption}
+            travelFeeOption={travelFeeOption}
+            setTravelFeeOption={setTravelFeeOption}
+            travelFeeAmount={travelFeeAmount}
+            setTravelFeeAmount={setTravelFeeAmount}
+            travelTime={travelTime}
+            setTravelTime={setTravelTime}
           />
         );
       case "Supermarket":
@@ -479,7 +471,7 @@ const Home = () => {
                         value={selectedService}
                         onChange={handleServiceChange}
                       >
-                        <Grid container>
+                        <Grid container width={"850px"}>
                           <Grid item xs={4}>
                             <Grid container>
                               <Grid item xs={12}>
@@ -491,12 +483,15 @@ const Home = () => {
                               </Grid>
                               <Grid item xs={12}>
                                 <FormControlLabel
-                                  value="Taxi"
+                                  value="Logistic"
                                   control={<Radio />}
-                                  label="Taxi"
+                                  label="Logistic"
                                 />
                               </Grid>
-
+                            </Grid>
+                          </Grid>
+                          <Grid item xs={4}>
+                            <Grid container>
                               <Grid item xs={12}>
                                 <FormControlLabel
                                   value="Supermarket"
@@ -510,50 +505,9 @@ const Home = () => {
                             <Grid container>
                               <Grid item xs={12}>
                                 <FormControlLabel
-                                  value="Logistic"
+                                  value="Taxi"
                                   control={<Radio />}
-                                  label="Logistic"
-                                />
-                              </Grid>
-                              <Grid item xs={12}>
-                                <FormControlLabel
-                                  value="Education"
-                                  control={<Radio />}
-                                  label="Education"
-                                />
-                              </Grid>
-
-                              <Grid item xs={12}>
-                                <FormControlLabel
-                                  value="Other"
-                                  control={<Radio />}
-                                  label="Other"
-                                />
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                          <Grid item xs={4}>
-                            <Grid container>
-                              <Grid item xs={12}>
-                                <FormControlLabel
-                                  value="1111"
-                                  control={<Radio />}
-                                  label="1111"
-                                />
-                              </Grid>
-                              <Grid item xs={12}>
-                                <FormControlLabel
-                                  value="2222"
-                                  control={<Radio />}
-                                  label="2222"
-                                />
-                              </Grid>
-
-                              <Grid item xs={12}>
-                                <FormControlLabel
-                                  value="3333"
-                                  control={<Radio />}
-                                  label="3333"
+                                  label="Taxi"
                                 />
                               </Grid>
                             </Grid>
@@ -603,7 +557,7 @@ const Home = () => {
                 style={{ width: "20%", alignContent: "center" }}
                 onClick={handleSubmit}
               >
-                Get Data
+                PROCESS
               </Button>
             </Item>
           </Grid>
@@ -639,6 +593,7 @@ const Home = () => {
                             onClick={() =>
                               handleViewModalOpen(submittedUserList)
                             }
+                            disabled={userList.length == 0}
                           >
                             View
                           </Button>
@@ -650,6 +605,7 @@ const Home = () => {
                             variant="contained"
                             startIcon={<DownloadForOfflineIcon />}
                             onClick={handleDownload}
+                            disabled={userList.length == 0}
                           >
                             Download
                           </Button>
