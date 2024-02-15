@@ -42,7 +42,15 @@ module.exports = (sequelize, DataTypes) => {
     );
     Main.associate = (models) => {
         Main.hasMany(models.New_Restaurant_2, {
-          foreignKey: "Send_Id_Fk",
+          foreignKey: "Send_Id_R_Fk",
+          sourceKey: "Send_Id",
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
+        });
+      };
+      Main.associate = (models) => {
+        Main.hasMany(models.New_Supermarket_2, {
+          foreignKey: "Send_Id_S_Fk",
           sourceKey: "Send_Id",
           onUpdate: "CASCADE",
           onDelete: "CASCADE",

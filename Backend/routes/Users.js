@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 
 router.use(bodyParser.json());
 router.use(cors());
-const { Users,Main,NewRestaurant_2,New_Supermarket_2 } = require("../models");
+const { Users,Main,New_Restaurant_2,New_Supermarket_2 } = require("../models");
 
 router.post("/filtered-data", async (req, res) => {
   try {
