@@ -34,9 +34,9 @@ export default function Taxi({
     }
   };
 
-  const handleTravelFeeAmountChange = (index, value) => {
+  const handleTravelFeeAmountChange = (index, value1) => {
     const newTravelFeeAmount = [...travelFeeAmount];
-    newTravelFeeAmount[index] = value;
+    newTravelFeeAmount[index] = value1;
     setTravelFeeAmount(newTravelFeeAmount);
   };
 
@@ -97,16 +97,6 @@ export default function Taxi({
     }
   };
 
-  const handleTravelFeeRadioChange = (e) => {
-    setTravelFeeOption(e.target.value);
-    setTravelFeeAmount([""]);
-  };
-
-  const handleTravelTimeRadioChange = (e) => {
-    setTravelTimeOption(e.target.value);
-    setTravelTime([""]);
-  };
-
   const renderTravelFeeInputs = () => {
     if (travelFeeOption === "Between") {
       return (
@@ -157,6 +147,18 @@ export default function Taxi({
       );
     }
   };
+
+  const handleTravelFeeRadioChange = (e) => {
+    setTravelFeeOption(e.target.value);
+    setTravelFeeAmount([""]);
+  };
+
+  const handleTravelTimeRadioChange = (e) => {
+    setTravelTimeOption(e.target.value);
+    setTravelTime([""]);
+  };
+
+  
 
   return (
     <>
@@ -224,13 +226,13 @@ export default function Taxi({
                       <FormControlLabel
                         control={
                           <Checkbox
-                            checked={selectedServiceProvider.includes("Taxi1")}
+                            checked={selectedServiceProvider.includes("Kangaroo")}
                             onChange={() =>
-                              handleServiceProviderChange("Taxi1")
+                              handleServiceProviderChange("Kangaroo")
                             }
                           />
                         }
-                        label="Taxi1"
+                        label="Kangaroo"
                       />
                     </Grid>
                   </Grid>
@@ -241,13 +243,13 @@ export default function Taxi({
                       <FormControlLabel
                         control={
                           <Checkbox
-                            checked={selectedServiceProvider.includes("Taxi2")}
+                            checked={selectedServiceProvider.includes("Other")}
                             onChange={() =>
-                              handleServiceProviderChange("Taxi2")
+                              handleServiceProviderChange("Other")
                             }
                           />
                         }
-                        label="Taxi2"
+                        label="Other"
                       />
                     </Grid>
                   </Grid>

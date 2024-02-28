@@ -21,7 +21,6 @@ const SupermarketTP = ({ setSelectedTime }) => {
       minutesToTime(newValue[1]),
     ];
     setSelectedTime(formattedTime);
-    console.log(formattedTime);
   };
   return (
     <div style={{ width: 600, marginLeft: "40px" }}>

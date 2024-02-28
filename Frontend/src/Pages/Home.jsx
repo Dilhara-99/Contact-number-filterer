@@ -55,7 +55,7 @@ const Home = () => {
   const [selectedAge, setSelectedAge] = useState([15, 60]);
   const [selectedGender, setSelectedGender] = useState("All");
   const [submittedUserList, setSubmittedUserList] = useState([]);
-  const [selectedService, setSelectedService] = useState(null);
+  const [selectedService, setSelectedService] = useState("");
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [userCount, setUserCount] = useState(0);
   const [userList, setUserList] = useState([]);
@@ -86,8 +86,8 @@ const Home = () => {
   const [selectedServiceProvider, setSelectedServiceProvider] = useState([]);
   const [travelTimeOption, setTravelTimeOption] = useState("");
   const [travelFeeOption, setTravelFeeOption] = useState("");
-  const [travelFeeAmount, setTravelFeeAmount] = useState("");
-  const [travelTime, setTravelTime] = useState("");
+  const [travelFeeAmount, setTravelFeeAmount] = useState([""]);
+  const [travelTime, setTravelTime] = useState([""]);
   const usersPerPage = 60;
 
   const handleSubmit = async () => {
@@ -150,6 +150,7 @@ const Home = () => {
         setUserCountByAge(response.data.userCountByAge);
         setAllUsersInSelectedProvince(response.data.allUsersInSelectedProvince);
         setAllUsersInSelectedDistrict(response.data.allUsersInSelectedDistrict);
+        console.log(selectedService)
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -290,14 +291,14 @@ const Home = () => {
       case "Supermarket":
         return (
           <Supermarket
-            setSelectedDays={setSelectedDays}
-            setSelectedTime={setSelectedTime}
-            amountOption={amountOption}
-            setAmountOption={setAmountOption}
-            amountValues={amountValues}
-            setAmountValues={setAmountValues}
-            selectedServiceProvider={selectedServiceProvider}
-            setSelectedServiceProvider={setSelectedServiceProvider}
+          setSelectedDays={setSelectedDays}
+          setSelectedTime={setSelectedTime}
+          amountOption={amountOption}
+          setAmountOption={setAmountOption}
+          amountValues={amountValues}
+          setAmountValues={setAmountValues}
+          selectedServiceProvider={selectedServiceProvider}
+          setSelectedServiceProvider={setSelectedServiceProvider}
           />
         );
       case "Logistic":

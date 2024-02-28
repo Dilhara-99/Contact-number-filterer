@@ -130,10 +130,10 @@ export default function Supermarket({
                         control={
                           <Checkbox
                             checked={selectedServiceProvider.includes(
-                              "Keells Super"
+                              "Keells"
                             )}
                             onChange={() =>
-                              handleServiceProviderChange("Keells Super")
+                              handleServiceProviderChange("Keells")
                             }
                           />
                         }

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const Mains = sequelize.define(
-      "Main",
+    const main_taxiview = sequelize.define(
+      "main_taxiview",
       {
         Contact_No: {
           type: DataTypes.BIGINT,
@@ -35,28 +35,28 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
+        travelFeeAmount: {
+          type: DataTypes.DOUBLE,
+          allowNull: false,
+        },
+        travelTime: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        Time: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        Taxi_Name: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
       },
       {
+        tableName: "main_taxiview",
         timestamps: false,
       }
     );
-    // Mains.associate = (models) => {
-    //     Mains.hasMany(models.New_Restaurant_2s, {
-    //       foreignKey: "Send_Id_R_Fk",
-    //       sourceKey: "Send_Id",
-    //       onUpdate: "CASCADE",
-    //       onDelete: "CASCADE",
-    //     });
-    //   };
-    //   Mains.associate = (models) => {
-    //     Mains.hasMany(models.New_Supermarket_2s, {
-    //       foreignKey: "Send_Id_S_Fk",
-    //       sourceKey: "Send_Id",
-    //       onUpdate: "CASCADE",
-    //       onDelete: "CASCADE",
-    //     });
-    //   };
-    return Mains;
+  
+    return main_taxiview;
   };
-  
-  

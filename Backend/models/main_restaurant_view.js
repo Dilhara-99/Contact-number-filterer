@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const Mains = sequelize.define(
-      "Main",
+    const main_restaurantview = sequelize.define(
+      "main_restaurantview",
       {
         Contact_No: {
           type: DataTypes.BIGINT,
@@ -35,28 +35,25 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
+        Amount: {
+          type: DataTypes.DOUBLE,
+          allowNull: false,
+        },
+        Time: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        Restaurant_Name: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
       },
       {
+        tableName: "main_restaurantview",
         timestamps: false,
       }
     );
-    // Mains.associate = (models) => {
-    //     Mains.hasMany(models.New_Restaurant_2s, {
-    //       foreignKey: "Send_Id_R_Fk",
-    //       sourceKey: "Send_Id",
-    //       onUpdate: "CASCADE",
-    //       onDelete: "CASCADE",
-    //     });
-    //   };
-    //   Mains.associate = (models) => {
-    //     Mains.hasMany(models.New_Supermarket_2s, {
-    //       foreignKey: "Send_Id_S_Fk",
-    //       sourceKey: "Send_Id",
-    //       onUpdate: "CASCADE",
-    //       onDelete: "CASCADE",
-    //     });
-    //   };
-    return Mains;
-  };
   
+    return main_restaurantview;
+  };
   
